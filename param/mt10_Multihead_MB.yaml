@@ -1,0 +1,45 @@
+algo: sac_multihead_mb
+env_settings: # passed to gym.make_vec
+  max_episode_steps: 200
+  seed: 42
+  tasks:
+  - reach-v3
+  - push-v3
+  - pick-place-v3
+  - door-open-v3
+  - drawer-open-v3
+  - drawer-close-v3
+  - button-press-topdown-v3
+  - peg-insert-side-v3
+  - window-open-v3
+  - window-close-v3
+id: 400 
+ns: mt10
+misc: # parameters used in a few places
+  CHECKPOINT_FREQ: 1000000
+  EVAL_FREQ: 20000
+  N_EVAL_EPISODES: 10
+  TIMESTEPS: 2000000    #2 million per steps
+sac_settings: # passed to SAC constructor
+  policy: SACPolicy_Multihead
+  learning_rate: 0.0003
+  buffer_size: 300000
+  learning_starts: 5000
+  batch_size: 128             
+  tau: 0.001
+  gamma: 0.99                 
+  gradient_steps: 1
+  ent_coef: "auto"
+  target_entropy: 'auto'
+  use_sde: False
+  policy_kwargs:
+    net_arch:
+      pi: [512, 1024, 1024, 512]          # Actor arch
+      qf: [512, 1024, 512]    # Critic Backbone arch (Heavy, requires larger batch_size)
+    
+    net_arch_head: [512, 256] # Critic Heads
+    
+    log_std_init: -3
+    use_expln: True
+
+    share_features_extractor: True

@@ -1,0 +1,35 @@
+algo: SAC # SAC | SAC_PCGRAD
+env_settings: # passed to gym.make_vec
+  max_episode_steps: 250
+  seed: 42
+  tasks:
+  - push-v3
+  use_one_hot: False
+id: 20001 # str | int, name for this configuration
+ns: st
+misc: # parameters used in a few places
+  CHECKPOINT_FREQ: 100000
+  EVAL_FREQ: 20000
+  N_EVAL_EPISODES: 10
+  TIMESTEPS: 2000000    #2 million per steps
+sac_settings: # passed to SAC constructor
+  policy: MlpPolicy
+  learning_rate: 0.0004    #5e-4
+  buffer_size: 500000
+  learning_starts: 5000
+  batch_size: 512
+  tau: 0.005
+  gamma: 0.99
+  train_freq: 1
+  gradient_steps: -1
+  ent_coef: "auto"
+  target_entropy: 'auto'
+  use_sde: False
+  policy_kwargs:
+    net_arch:
+      - 256
+      - 256
+      - 256
+    log_std_init: -3
+    use_expln: False
+    # activation_fn isn't supported right now, defaults to ReLU, can implement something if we need to change it
